@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+<meta name="description" content="">
+<meta name="author" content="">
+<link rel="shortcut icon" href="/static/favicon.ico"/>
+<title>${system_name or ''}</title>
+<link href="/static/css/bootstrap.min.css" rel="stylesheet">
+<link href="/static/css/base.css" rel="stylesheet">
+<script src="/static/js/jquery-1.11.0.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>  
+<!-- Just for debugging purposes. Don't actually copy this line! -->
+<!--[if lt IE 9]>
+<script src="/static/js/ie8-responsive-file-warning.js"></script><![endif]-->
+<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!--[if lt IE 9]>
+<script src="/static/js/html5shiv.min.js"></script>
+<script src="/static/js/respond.min.js"></script>
+<![endif]-->
+${self.head()}
+</head>
+<body>
+
+<div class="container">
+    <div>${self.main()}</div>
+</div>
+
+<div id="footer">
+  <div class="container">
+    <div class="copy">
+        <p class="pull-left">${system_name}，印象笔记爱好者部落</p>
+        <p class="pull-right"><a href="https://app.yinxiang.com/referral/Registration.action?uid=4909573&sig=3569ec23a062cefa1186eb8114dcd324" target="_blank"><span class="glyphicon glyphicon-volume-up"></span>  加入印象笔记，立即拥有一个月高级账户</a></p>
+    </div>
+  </div>
+</div>
+
+   
+</body>
+</html>

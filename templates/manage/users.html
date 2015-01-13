@@ -1,0 +1,59 @@
+<%inherit file="../base.html"/>
+<%namespace name="main_ui" file="../main_ui.html"/>
+<%namespace name="sidebar_ui" file="../sidebar_ui.html"/>
+
+<%def name="head()">
+<script>
+    function activeUser(username) {
+        if (confirm("确认激活吗？")) {
+            $.post("/manage/active/"+username,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+              alert(ev.msg);
+              if(ev.code==0){window.location.reload();}
+            },"json");
+        }
+    }    
+</script>
+
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading">
+    <div class="bar">
+        <span class="glyphicon glyphicon-usd"></span> 用户管理
+    </div>
+    </div>
+    <div class="panel-body posts">
+    <table class="table ">
+      <thead>
+        <tr>
+          <th>用户名</th>
+          <th>邮件地址</th>
+          <th>注册时间</th>
+          <th>操作</th>
+        </tr>
+      </thead>
+      <tbody>
+      % for user in page_data.result:
+        <tr>
+          <td>${user.username}</td>
+          <td>${user.email}</td>
+          <td>${user.created}</td>
+          <td>
+          % if user.actived == 0:
+            <a href="javascript:activeUser('${user.username}');">激活</a>
+          % endif
+          </td>
+        </tr>
+         % endfor
+      </tbody>
+    </table>
+    ${page_data.render()} 
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+    ${sidebar_ui.manage_box()}
+</%def>

@@ -1,0 +1,121 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="main_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+
+<%def name="head()">
+<script>
+
+function followUser(username){
+    $.post("/user/follow/"+username,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){
+            window.location.reload();
+          }else{
+            alert(ev.msg);
+          }
+      },"json");
+}
+
+function unFollowUser(username){
+    $.post("/user/unfollow/"+username,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){
+            window.location.reload();
+          }else{
+            alert(ev.msg);
+          }
+      },"json");  
+}
+
+function blockUser(username){
+    $.post("/user/block/"+username,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){
+            window.location.reload();
+          }else{
+            alert(ev.msg);
+          }
+      },"json");  
+}
+
+function unBlockUser(username){
+    $.post("/user/unblock/"+username,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){
+            window.location.reload();
+          }else{
+            alert(ev.msg);
+          }
+      },"json");  
+}
+% if current_user and current_user.is_admin:
+function sysBlockUser(username){
+    $.post("/user/sysblock/"+username,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){
+            window.location.href="/";
+          }else{
+            alert(ev.msg);
+          }
+      },"json");  
+}
+% endif
+</script>
+
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-body user-profile">
+      <div class="media">
+          <a class="pull-right" href="/user/profile/${user.username}">
+            <img class="media-object img-rounded" src="${user.headurl or ''}!head" alt="...">
+          </a>
+          <div class="media-body">
+            <h3 class="media-heading">${user.nickname or user.username|h}</h3>
+            <div class="media-note">${user.signature or ''|h}</div>
+            <div class="media-note">
+              <span class="gray-text">加入时间:${user.created}</span>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="panel-footer">
+
+% if  current_user and user.username != current_user.username:
+
+    % if current_user and user.username in handler.get_user_follows(current_user.username):
+      <a href="javascript:unFollowUser('${user.username}');">取消关注</a>
+    % else:
+       <a href="javascript:followUser('${user.username}');">关注用户</a>
+    % endif
+
+    % if current_user and user.username in handler.get_user_blocks(current_user.username):
+      <a href="javascript:unBlockUser('${user.username}');">取消屏蔽</a>
+    % else:
+       <a href="javascript:blockUser('${user.username}');">屏蔽用户</a> 
+    % endif   
+% endif  
+
+% if current_user and current_user.is_admin:
+    <a href="javascript:sysBlockUser('${user.username}');">系统屏蔽用户</a>   
+% endif
+    </div>
+</div>  
+
+<!-- user posts -->
+
+<div class="panel panel-default">
+    <div class="panel-heading-w"> 
+    <span class="glyphicon glyphicon-list"> 
+    <span class="title">${user.nickname or user.username}最近创建的主题</span>
+    </div>
+    <div class="panel-body posts">
+        ${main_ui.post_list2(posts)}
+    </div>
+    <div class="panel-footer">
+      <a href="/user/posts/${handler.encrypt_username(user.username)}"><span class="glyphicon glyphicon-hand-left"> ${user.nickname or user.username}的更多主题</a>
+    </div>
+</div>
+</%def>
+
+
+
+<%def name="sidebar()">
+${sidebar_ui.user_box()}
+</%def>

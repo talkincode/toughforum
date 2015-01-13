@@ -1,0 +1,25 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="main_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+
+<%def name="head()">
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading">
+    <div class="bar">
+        <span class="glyphicon glyphicon-user"></span> 我关注的用户主题
+    </div>
+    </div>
+    <div class="panel-body posts">
+        ${main_ui.post_list(page_data)}
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+    ${sidebar_ui.user_box()}
+    ${sidebar_ui.manage_box()}
+</%def>

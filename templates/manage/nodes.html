@@ -1,0 +1,52 @@
+<%inherit file="../base.html"/>
+<%namespace name="sidebar_ui" file="../sidebar_ui.html"/>
+
+<%def name="head()">
+<script>
+    function deleteNode(node_name) {
+        if (confirm("确认删除吗？")) {
+            window.location.href = "/manage/node/delete?node_name=" + node_name;
+        }
+    }    
+</script>
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-th"></span> 节点列表
+    <div class="bar pull-right">
+        <a href="/manage/node/add">增加节点</a>
+    </div>
+    </div>
+    <div class="panel-body">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>节点名</th>
+                <th>节点描述</th>
+                <th>主题数</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                % for node in page_data.result:
+                    <tr>
+                        <td>${node.node_name}</td>
+                        <td>${node.node_desc}</td>
+                        <td>${str(node.topic_count)}</td>
+                        <td><a class="opt-btn btn-default" href="/manage/node/modify?node_name=${node.node_name}">修改</a>
+                            <a class="opt-btn btn-default" href="javascript:deleteNode('${node.node_name}')">删除</a></td>
+                    </tr>
+                % endfor
+            </tbody>
+        </table>
+        ${page_data.render()}
+    </div>
+</div>
+</%def>
+
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+    ${sidebar_ui.manage_box()}
+</%def>

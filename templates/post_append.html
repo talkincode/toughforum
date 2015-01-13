@@ -1,0 +1,48 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="main_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+<%def name="head()">
+<link href="/static/uploadify/uploadify.css" rel="stylesheet">
+<script src="/static/uploadify/jquery.uploadify.min.js"></script>
+<script>
+    $(function () 
+    {
+        $('#pic_upload').uploadify({
+            'buttonText': '上传图片',
+            'formData': {'_xsrf': '${handler.xsrf_token}','username': '${handler.current_user.username}'},
+            'fileSizeLimit': '2MB',
+            'fileTypeExts': '*.gif; *.jpg; *.png;*.jpeg',
+            'swf': '/static/uploadify/uploadify.swf',
+            'uploader': '/post/res/upload',
+            'onUploadSuccess': function (file, data, response) {
+                $("#content").val($("#content").val() + "   " + data);
+            }
+        });
+    });
+</script>
+</%def>
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading-w">
+    <span class="glyphicon glyphicon-home">
+    </span><span class="conn">›</span>  ${post.topic} <span class="conn">›</span>  新增内容
+    <div class="bar pull-right">
+        <a href="javascript:history.go(-1);">返回上页</a>
+    </div>
+    </div>
+        <div class="panel-body">
+
+        <form role="form" action="/post/append/${str(post.post_id)}" method="post">
+            ${handler.xsrf_form_html()}
+            <textarea id="content" name="content" class="form-control top10" rows="12" placeholder="在此描述你的内容"></textarea>
+            <button id="pic_upload" type="button" class="btn btn-info">上传</button>   
+            <button type="submit" class="btn btn-default top10">发布</button>
+             <div id="queue"></div>
+        </form>
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+</%def>

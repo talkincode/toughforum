@@ -1,0 +1,20 @@
+admin_email: example@gmail.com
+cookie_secret: htFuvC9FTDanupmQdFFgMYWghPlFaEzZjLMfxtMtUkg=
+debug: true
+page_size: 10
+login_url: /login
+templates: templates
+system_name: !!python/str "印象加油站"
+test: true
+version: '1.0'
+xsrf_cookies: true
+startup: startup
+db_url: mysql+pymysql://root:root@127.0.0.1:3366/coedb?charset=utf8
+db_echo: False
+db_pool: 15
+sqlite_file: "coedata.sqlite3"
+active_mail: false
+server_base: http://127.0.0.1:7980
+mail_from: support@comeonever.com
+mail_api_key: key-7bbdde03322da595f2ca19c73453534
+mail_api_url: https://api.mailgun.net/v2/example.mailgun.org/messages

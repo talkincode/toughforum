@@ -1,0 +1,97 @@
+<%inherit file="base.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+<%def name="head()">
+<link href="/static/uploadify/uploadify.css" rel="stylesheet">
+<script src="/static/uploadify/jquery.uploadify.min.js"></script>
+<script>
+    $(function () 
+    {
+        $('#pic_upload').uploadify({
+            'buttonText': '上传新头像',
+            'formData': {'_xsrf': '${handler.xsrf_token}','username': '${handler.current_user.username}'},
+            'fileSizeLimit': '1MB',
+            'fileTypeExts': '*.gif; *.jpg; *.png',
+            'swf': '/static/uploadify/uploadify.swf',
+            'uploader': '/user/settings/head/upload/${pf_form.d.username}',
+            'onUploadSuccess': function (file, data, response) {
+                $("#headurl").val(data);
+                $("#headimg").attr("src",data+"!head");
+            }
+        });
+    });
+
+function reactive(){
+    $.post("/user/reactive",{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        alert(ev.msg);
+      },"json");
+}    
+</script>
+</%def>
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading"><span class="glyphicon glyphicon-user"></span> 用户资料
+    <div class="bar pull-right">
+        <a href="javascript:history.go(-1);">返回上页</a>
+    </div>
+    </div>
+        <div class="panel-body">
+            % if msg:
+            <p class="alert alert-warning">${msg}</p>
+            % endif
+            <form class="form-horizontal" role="form" action="${pf_form.action}" method="post">
+                ${handler.xsrf_form_html()}
+                ${pf_form.render_css()}
+            </form>
+
+            <hr>
+             <form class="form-horizontal" role="form" >
+                 <div class="form-group" >
+                 <label class="col-sm-3 control-label"  for="actived">${current_user.actived == 1 and '已激活' or '未激活'}</label>
+                 <div class="col-sm-6">
+                % if current_user.actived == 0:
+                    <button type="button" class="btn btn-default" onclick="javascript:reactive();" >发送激活邮件</button>
+                 % endif
+                 </div>
+
+                </div>
+            </form>    
+            <hr>
+             <form class="form-horizontal" role="form" >
+                 <div class="form-group" >
+                 <label class="col-sm-3 control-label"  for="invite_url">邀请链接</label>
+                 <div class="col-sm-6"><input name="invite_url" value="${handler.settings['server_base']}/join?r=${uinv.invite_code}" class="form-control" type="text"/>
+                 </div>
+                </div>
+            </form>
+
+            <hr>
+            <form class="form-horizontal" role="form" action="" method="post">
+             <div class="form-group">
+                <label for="inputEmail3" class="col-sm-3 control-label">
+                  <img id="headimg" src="${current_user.headurl}" width="79" height="79" alt="">
+                </label>
+                <div class="col-sm-6">
+                <input type="hidden" name="headurl" value="">
+                 <button id="pic_upload" type="button" class="btn btn-info">上传</button>     
+                 禁止使用任何低俗或者敏感图片作为头像
+                </div>
+              </div>
+            </form>
+
+            <hr>
+            <form class="form-horizontal" role="form" action="${pwd_form.action}" method="post">
+                ${handler.xsrf_form_html()}
+                ${pwd_form.render_css()}
+            </form>
+
+
+
+
+
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+</%def>

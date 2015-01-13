@@ -1,0 +1,79 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="../main_ui.html"/>
+
+<%def name="head()">
+<style type="text/css" media="screen">
+.panel img{
+    max-width: 100%;
+    height:auto; 
+}
+</style>
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-body post-detail">
+      <div class="media">
+          <a class="pull-right" href="/user/profile/${handler.encrypt_username(post.username)}">
+            <img class="media-object img-rounded" src="${handler.get_user_head(post.username)}!head" alt="...">
+          </a>
+          <div class="media-body">
+            <h3 class="media-heading">${post.topic}</h3>
+            <div class="media-note">
+              <a href="/node/${post.node_name}"><span class="label">${post.node_name}</span></a> - 
+              <a href="/user/profile/${handler.encrypt_username(post.username)}">${handler.get_nickname(post.username) | h}</a> - 
+              <span class="gray-text">${utils.convtime(post.created) | h}</span>
+            </div>
+          </div>
+        </div>
+       <hr>  
+       <p>${handler.filterRes(post.content,thumb="480")}</p> 
+</div>
+<div class="panel-footer">
+ % if post.post_id in handler.get_user_post_collects(username):
+  <a href="/mps/post/uncollect/${str(post.post_id)}?otoken=${otoken}&ct=${utils.get_uuid()}">取消收藏</a>
+ % else:
+  <a href="/mps/post/collect/${str(post.post_id)}?otoken=${otoken}&ct=${utils.get_uuid()}">收藏主题</a>
+ % endif
+
+  % if post.post_id not in handler.get_user_post_ignores(username):
+  <a href="/mps/post/ignore/${str(post.post_id)}?otoken=${otoken}&ct=${utils.get_uuid()}">忽略主题</a>
+  % endif  
+</div>
+</div>  
+
+% if replys.count():
+<div class="panel panel-default">
+    <div class="panel-body replys">
+    % for reply in replys:
+    <div class="media">
+      <a class="pull-left" href="/user/profile/${handler.encrypt_username(reply.username)}">
+        <img class="media-object img-rounded" src="${handler.get_user_head(reply.username)}!head" alt="...">
+      </a>
+      <div class="media-body">
+        <div class="media-note">
+        <a href="/user/profile/${handler.encrypt_username(reply.username)}">${handler.get_nickname(reply.username)|h}</a> 
+        <span class="gray-text">回复于 ${utils.convtime(post.created)}</span>
+        </div>
+        <p> ${handler.filterRes(reply.content,thumb="480")}</p>
+      </div>
+    </div>
+    <hr>
+    % endfor
+   </div>
+</div>  
+% endif
+
+<div class="panel panel-default">
+    <div class="panel-heading">添加一条回复</div>
+    <div class="panel-body">
+        <form role="form" action="/mps/post/reply/${str(post.post_id)}?otoken=${otoken}" method="post">
+            ${handler.xsrf_form_html()}
+            <textarea name="reply_content" class="form-control" rows="5" placeholder="请尽量让自己的回复能够对别人有帮助">${reply_content or ''}</textarea>
+            <button type="submit" class="btn btn-default btn-md top10">回复</button>
+        </form>      
+    </div>
+</div>
+</%def>
+
+

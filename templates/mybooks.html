@@ -1,0 +1,27 @@
+<%inherit file="base.html"/>
+<%namespace name="book_ui" file="book_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+
+<%def name="head()">
+
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading-w"><span class="glyphicon glyphicon-book"></span> 我收藏的笔记本</div>
+    <div class="panel-heading">
+    <div class="bar">
+        <span class="glyphicon glyphicon-plus"></span> <a href="/book/new">共享我的印象笔记本</a>
+    </div>
+    </div>
+    <div class="panel-body books">
+      ${book_ui.book_list(page_data)}
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+    ${sidebar_ui.user_box()}
+    ${sidebar_ui.manage_box()}
+</%def>

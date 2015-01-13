@@ -1,0 +1,118 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="main_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+
+<%def name="head()">
+<script>
+function collectPost(post_id){
+    $.post("/post/collect/"+post_id,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){window.location.reload();}else{alert(ev.msg);}
+      },"json");
+}
+function unCollectPost(post_id){
+    $.post("/post/uncollect/"+post_id,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){window.location.reload();}else{alert(ev.msg);}
+      },"json");
+}
+function ignorePost(post_id){
+  if (confirm("确认忽略吗？")) {
+    $.post("/post/ignore/"+post_id,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){window.location.href="/";}else{alert(ev.msg);}
+      },"json");
+  }
+}
+% if current_user and current_user.is_admin:
+function sysIgnorePost(post_id){
+  if (confirm("确认忽略吗？")) {
+    $.post("/post/sysignore/"+post_id,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        if(ev.code==0){window.location.href="/";}else{alert(ev.msg);}
+      },"json");
+  }
+}    
+
+function addEvernotePost(post_id){
+    if (confirm("确认收藏吗吗？")) {
+    $.post("/evernote/add/"+post_id,{'_xsrf': '${handler.xsrf_token}'},function(ev){
+        alert(ev.msg);
+      },"json");
+  }
+}
+
+% endif
+</script>
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading-w"> 
+    <span class="glyphicon glyphicon-home">
+    </span><span class="conn">›</span>  
+    <span class="title"><a href="/node/${node.node_name}">${node.node_desc}</a></span></div>
+    <div class="panel-body post-detail">
+      <div class="media">
+          <a class="pull-right" href="/user/profile/${handler.encrypt_username(post.username)}">
+            <img class="media-object img-rounded" src="${handler.get_user_head(post.username)}!head" alt="...">
+          </a>
+          <div class="media-body">
+            <h3 class="media-heading">${post.topic}</h3>
+            <div class="media-note">
+              <a href="/node/${post.node_name}"><span class="label">${post.node_name}</span></a> - 
+              <a href="/user/profile/${handler.encrypt_username(post.username)}">${handler.get_nickname(post.username) | h}</a> - 
+              <span class="gray-text">${utils.convtime(post.created)}</span>
+            </div>
+          </div>
+        </div>
+       <hr>  
+       <p>${handler.filterRes(post.content)}</p> 
+</div>
+ % if appends:
+ <div class="post-append">
+ % for append in appends:
+ <span class="gray-text">${utils.convtime(append.created)}</span>
+<p>
+ ${handler.filterRes(append.content)}
+ </p> 
+ % endfor
+ </div>
+ % endif
+<div class="panel-footer">
+ % if current_user and post.post_id in handler.get_user_post_collects(current_user.username):
+  <a href="javascript:unCollectPost('${str(post.post_id)}');">取消收藏</a>
+ % else:
+  <a href="javascript:collectPost('${str(post.post_id)}');">收藏主题</a>
+ % endif
+
+ % if current_user and post.username == current_user.username:
+    <a href="/post/append/${str(post.post_id)}">增加内容</a>
+    <a href="/post/move/${str(post.post_id)}">移动主题</a>
+ % endif
+
+<a href="#;" onclick="window.open('http://service.weibo.com/share/share.php?url=http://www.comeonever.com/post/${str(post.post_id)}&amp;title=${post.topic}', '_blank', 'width=550,height=370'); recordOutboundLink(this, 'Share', 'weibo.com');" >微博分享</a>
+
+  % if current_user and post.post_id not in handler.get_user_post_ignores(current_user.username):
+  <a href="javascript:ignorePost('${str(post.post_id)}');">忽略主题</a>
+  % endif  
+
+  % if current_user and current_user.is_admin:
+      <a href="javascript:sysIgnorePost('${str(post.post_id)}');">系统忽略主题</a>
+  % endif  
+</div>
+</div>  
+
+% if page_data.result.count():
+<div class="panel panel-default">
+    <div class="panel-body replys">
+      ${main_ui.reply_list(page_data)}
+   </div>
+</div>  
+% endif
+
+${main_ui.reply_panel()}
+</%def>
+
+
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+    ${sidebar_ui.user_box()}
+</%def>

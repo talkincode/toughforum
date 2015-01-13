@@ -1,0 +1,25 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="main_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+
+<%def name="head()">
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading-w"> ${main_ui.get_top_nodes(nodes,node_name)}</div>
+    <div class="panel-heading">
+    <div class="bar">
+        <span class="glyphicon glyphicon-edit"></span> <a href="/post/new/${node_name}">发布新主题</a>
+    </div>
+    </div>
+    <div class="panel-body posts">
+        ${main_ui.post_list(page_data)}
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+    ${sidebar_ui.node_intro_box(node_intro)}
+</%def>

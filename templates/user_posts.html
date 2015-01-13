@@ -1,0 +1,25 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="main_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+
+<%def name="head()">
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading-w"> 
+    <span class="glyphicon glyphicon-home">
+    </span><span class="conn">›</span>  
+    <span class="title"><a href="/user/profile/${handler.encrypt_username(user.username)}">${user.nickname or user.username}</a></span>
+    </span><span class="conn">›</span>  
+    <span class="title">所有主题</span>
+    </div>
+    <div class="panel-body posts">
+        ${main_ui.post_list(page_data)}
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+</%def>

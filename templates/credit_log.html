@@ -1,0 +1,44 @@
+<%inherit file="base.html"/>
+<%namespace name="main_ui" file="main_ui.html"/>
+<%namespace name="sidebar_ui" file="sidebar_ui.html"/>
+
+<%def name="head()">
+</%def>
+
+<%def name="main()">
+<div class="panel panel-default">
+    <div class="panel-heading">
+    <div class="bar">
+        <span class="glyphicon glyphicon-usd"></span> 我的硬币交易记录
+    </div>
+    </div>
+    <div class="panel-body posts">
+    <table class="table ">
+      <thead>
+        <tr>
+          <th>类型</th>
+          <th>金额</th>
+          <th>余额</th>
+          <th>时间</th>
+        </tr>
+      </thead>
+      <tbody>
+      % for clog in page_data.result:
+        <tr>
+          <td>${clog.op_desc}</td>
+          <td>${str(clog.credit_val)}</td>
+          <td>${str(clog.balance)}</td>
+          <td>${clog.created}</td>
+        </tr>
+         % endfor
+      </tbody>
+    </table>
+    ${page_data.render()} 
+    </div>
+</div>
+</%def>
+
+<%def name="sidebar()">
+    ${sidebar_ui.login_box()}
+    ${sidebar_ui.user_box()}
+</%def>
