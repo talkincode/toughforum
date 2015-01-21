@@ -183,7 +183,7 @@ class JoinHandler(BasicHandler):
         self.set_secure_cookie("username", user.username, expires_days=30)
         self.render("message.html",msg=u"注册成功,请前往您的邮箱根据激活邮件提示完成账号激活!")
         try:
-            self.sendmail('%s,请验证您在印象加油站注册的电子邮件地址'%user.username,
+            self.sendmail('%s,请验证您在%s注册的电子邮件地址'%(user.username,self.settings['system_name'])
                 self.render_string("mail.html",user=user),
                 tos=[user.email])
         except :
