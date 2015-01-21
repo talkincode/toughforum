@@ -22,7 +22,7 @@ def respond(data, msg=None, bot=None, handler=None):
         user.email = "%s@tough.radius"%msg.fromuser
         user.created = get_currtime()
         user.actived = 1
-        user.active_code = get_uuid() 
+        user.active_code = get_uuid()
         user.credit = credit_types['weixin_join'].value
         user.is_ignore = 0
         user.headurl = handler.settings['default_head']
@@ -46,10 +46,10 @@ def respond(data, msg=None, bot=None, handler=None):
         handler.db.add(ui)
         handler.db.commit()
 
-    return '''感谢您关注印象加油站! 系统自动分配的印象昵称是 %s, 发送以下关键字可以快捷为您服务: \n
+    return '''感谢您关注%s! 系统自动分配的昵称是 %s, 发送以下关键字可以快捷为您服务: \n
     0 : 帮助\n
     1 : 查询最新主题\n
     2 : 查询热门主题\n
     3 : 查询我收藏的主题\n
     4 : 查询我关注的用户主题\n
-    5 : 我要发布主题''' % (user.nickname or 'anonymous')
+    5 : 我要发布主题''' % ("TODO 论坛名可配置", user.nickname or 'anonymous')

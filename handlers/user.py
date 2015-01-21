@@ -14,7 +14,7 @@ import time
 import os
 
 profile_form = webform.Form(
-    webform.Textbox("username", rules.is_alphanum3(6, 64), description=u"用户名", size=32,readonly="readonly",**input_style),
+    webform.Textbox("username", rules.is_alphanum3(2, 64), description=u"用户名", size=32,readonly="readonly",**input_style),
     webform.Textbox("email", rules.is_email, description=u"电子邮箱", size=128,readonly="readonly",**input_style),
     webform.Textbox("nickname", rules.len_of(0, 64), description=u"用户昵称", size=64,**input_style),
     webform.Textbox("signature", rules.len_of(0, 256), description=u"签名", size=256,**input_style),
@@ -50,7 +50,7 @@ class SettingsHeadHandler(BasicHandler):
     def check_xsrf_cookie(self):
         pass
     # @authenticated
-    def post(self, username,*args, **kwargs):      
+    def post(self, username,*args, **kwargs):
         print(self.request.cookies)
         user = self.db.query(CoeUser).filter(CoeUser.username==username).first()
         if not user:
@@ -82,7 +82,7 @@ class UserUpdateHandler(BasicHandler):
         user.signature = pf_form.d.signature
         self.db.commit()
 
-        self.redirect('/user/settings',permanent=False)     
+        self.redirect('/user/settings',permanent=False)
 
 @route("/user/password")
 class PasswordHandler(BasicHandler):
@@ -101,7 +101,7 @@ class PasswordHandler(BasicHandler):
         user.passdord = md5hash(pwd_form.d.password.encode())
         self.db.commit()
 
-        self.redirect('/user/settings',permanent=False)             
+        self.redirect('/user/settings',permanent=False)
 
 @route("/user/profile/(.*)")
 class ProfileHandler(BasicHandler):
@@ -186,7 +186,7 @@ class UserUnFollowHandler(BasicHandler):
             self.db.add(cur)
         self.db.commit()
         self.render_json(code=0,msg="ok")
-        
+
 
 @route("/user/block/(.*)")
 class UserBlockHandler(BasicHandler):
@@ -216,10 +216,10 @@ class UserBlockHandler(BasicHandler):
         cur.is_follow = 0
         cur.is_block = 1
         if is_new:
-            self.db.add(cur)        
+            self.db.add(cur)
         self.db.commit()
         self.render_json(code=0,msg="ok")
-        
+
 @route("/user/unblock/(.*)")
 class UserUnBlockHandler(BasicHandler):
 
@@ -242,7 +242,7 @@ class UserUnBlockHandler(BasicHandler):
             self.render_json(code=0,msg="ok")
             return
 
-        cur.is_block = 0  
+        cur.is_block = 0
         self.db.commit()
         self.render_json(code=0,msg="ok")
 
@@ -262,7 +262,7 @@ class SysBlockHandler(BasicHandler):
             return
 
         user.is_ignore = 1
-   
+
         self.db.commit()
         self.render_json(code=0,msg="ok")
 
@@ -272,7 +272,7 @@ class ReActiveHandler(BasicHandler):
 
     @authenticated
     def post(self,templates_vars={}):
-        last_send = self.get_secure_cookie("last_send_active") 
+        last_send = self.get_secure_cookie("last_send_active")
         if last_send:
             sec = int(time.time()) - int(float(last_send))
             if sec < 60:
@@ -281,13 +281,13 @@ class ReActiveHandler(BasicHandler):
         self.set_secure_cookie("last_send_active", str(time.time()), expires_days=1)
         user = self.db.query(CoeUser).filter(CoeUser.username==self.current_user.username).first()
         try:
-            self.sendmail('%s,请验证您在印象加油站注册的电子邮件地址'%user.username,
+            self.sendmail('%s,请验证您的电子邮件地址'%(user.username,),
                 self.render_string("mail.html",user=user),
                 tos=[user.email])
-            self.render_json(code=0,msg="激活邮件已经发送")  
+            self.render_json(code=0,msg="激活邮件已经发送")
         except :
             self.logging.exception("发送注册邮件至<%s>出错"%user.email)
-            self.render_json(code=0,msg="激活邮件发送失败") 
+            self.render_json(code=0,msg="激活邮件发送失败")
 
 
 

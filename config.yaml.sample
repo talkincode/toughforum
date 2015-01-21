@@ -4,7 +4,7 @@ debug: true
 page_size: 10
 login_url: /login
 templates: templates
-system_name: !!python/str "印象加油站"
+system_name: !!python/str "XXX 论坛(未命名)"
 test: true
 version: '1.0'
 xsrf_cookies: true
