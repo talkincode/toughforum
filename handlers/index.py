@@ -184,7 +184,7 @@ class JoinHandler(BasicHandler):
         self.render("message.html",msg=u"注册成功,请前往您的邮箱根据激活邮件提示完成账号激活!")
         try:
             self.sendmail('%s,请验证您在%s注册的电子邮件地址'%(user.username,self.settings['system_name'])
-                self.render_string("mail.html",user=user),
+                self.render_string("mail.html",user=user)
                 tos=[user.email])
         except :
             self.logging.exception("发送注册邮件至<%s>出错"%user.email)
