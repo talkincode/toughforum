@@ -168,11 +168,6 @@ class PostAppendHandler(BasicHandler):
         append.content = post_append
         append.created = get_currtime()
 
-        evpost = self.db.query(CoeEvernotePost).get(post_id)
-        if evpost:  
-            evpost.modified = 1
-            evpost.updated = get_currtime()   
-
         self.db.add(append)
         self.db.commit()
         self.redirect("/post/{0}".format(post_id), permanent=False)
