@@ -176,8 +176,23 @@ max-width:100%;height:auto;
 }
 
 .user-profile hr,
-.post-detail hr{
+.post-detail .hra{
     margin: 5px 0 10px 0;
+}
+
+.post-detail h1{
+    font-size:16px;
+    weight:600;
+}
+.post-detail h2{
+    font-size:14px;
+    weight:600;
+}
+.post-detail h3
+.post-detail h4
+.post-detail h5{
+    font-size:13px;
+    weight:500;
 }
 
 .user-profile .media,
