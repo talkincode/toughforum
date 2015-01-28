@@ -54,7 +54,7 @@ function addEvernotePost(post_id){
             <img class="media-object img-rounded" src="${handler.get_user_head(post.username)}!head" alt="...">
           </a>
           <div class="media-body">
-            <h3 class="media-heading">${post.topic}</h3>
+            <h1 class="media-heading">${post.topic}</h1>
             <div class="media-note">
               <a href="/node/${post.node_name}"><span class="label">${post.node_name}</span></a> - 
               <a href="/user/profile/${handler.encrypt_username(post.username)}">${handler.get_nickname(post.username) | h}</a> - 
