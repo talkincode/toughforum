@@ -192,8 +192,8 @@ max-width:100%;height:auto;
     font-size:18px;
     weight:600;
 }
-.post-detail h3
-.post-detail h4
+.post-detail h3,
+.post-detail h4,
 .post-detail h5{
     font-size:14px;
     weight:500;
