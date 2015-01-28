@@ -34,6 +34,11 @@ cache = CacheManager(cache_regions={
       'long_term':{ 'type': 'ext:memcached', 'url': '127.0.0.1:11211', 'expire': 3600 } 
       }) 
 
+def markdown(src):
+    ext = ['code-friendly','cuddled-lists','smarty-pants',
+    'fenced-code-blocks','footnotes','metadata','tables']
+    return  markdown2.markdown(src,extras=ext)
+
 ##############################################################################
 
 def encrypt(x,_key):
@@ -104,7 +109,7 @@ class BasicHandler(BaseHandler):
         template_vars["request"] = self.request
         template_vars["handler"] = self
         template_vars["utils"] = utils
-        template_vars["md"] = markdown2
+        template_vars["markdown"] = markdown
         template_vars["system_name"] = self.application.settings['system_name']
         mytemplate = self.tp_lookup.get_template(template_name)
         return mytemplate.render(**template_vars)
