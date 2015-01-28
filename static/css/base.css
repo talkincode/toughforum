@@ -234,7 +234,7 @@ max-width:100%;height:auto;
 .post-detail .media-heading{
     margin-top: 2px;
     font-weight: 500;
-    font-size: 18px;
+    font-size: 20px;
     line-height: 150%;
 }
 
@@ -255,6 +255,14 @@ max-width:100%;height:auto;
 .post-detail .media-note{
     color:gray;
     margin-top: 12px;
+}
+
+.post-detail blockquote {
+    color:gray;
+    padding: 10px 20px;
+    margin: 0 0 20px;
+    font-size: 13px;
+    border-left: 5px solid #eee;
 }
 
 
