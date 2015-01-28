@@ -35,8 +35,8 @@ cache = CacheManager(cache_regions={
       }) 
 
 def markdown(src):
-    ext = ['code-friendly','cuddled-lists','smarty-pants','spoiler'
-    'fenced-code-blocks','metadata','tables','tag-friendly']
+    ext = ['code-friendly','cuddled-lists','smarty-pants','spoiler',
+    'footnotes','metadata','tables','tag-friendly']
     return  markdown2.markdown(src,extras=ext)
 
 ##############################################################################
