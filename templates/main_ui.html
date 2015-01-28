@@ -98,7 +98,7 @@
         <a href="/user/profile/${handler.encrypt_username(reply.username)}">${handler.get_nickname(reply.username)|h}</a> 
         <span class="gray-text">回复于 ${utils.convtime(post.created)}</span>
         </div>
-        <p> ${handler.filterRes(reply.content)}</p>
+        <p> ${md.markdown(handler.filterRes(reply.content))}</p>
       </div>
     </div>
     <hr>

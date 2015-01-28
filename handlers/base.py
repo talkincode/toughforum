@@ -23,6 +23,7 @@ import json
 import re
 import upyun
 import functools
+import markdown2
 from db_models import (CoeUser,CoeUserRalation,CoeUserPost,CoeCreditLog,
     CoeUserPostReply)
 from beaker.cache import CacheManager
@@ -103,6 +104,7 @@ class BasicHandler(BaseHandler):
         template_vars["request"] = self.request
         template_vars["handler"] = self
         template_vars["utils"] = utils
+        template_vars["md"] = markdown2
         template_vars["system_name"] = self.application.settings['system_name']
         mytemplate = self.tp_lookup.get_template(template_name)
         return mytemplate.render(**template_vars)
