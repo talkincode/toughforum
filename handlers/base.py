@@ -312,7 +312,7 @@ class BasicHandler(BaseHandler):
         value = _filter_img(src)
         value = _filter_youku(value)
         value = _filter_tudou(value)
-        return value.replace("\n","<br>")      
+        return value      
 
     def get_1img_from_content(self,value):
         imgs = re.findall('(%s/%s/([a-zA-Z0-9]+/)?[a-zA-Z0-9]+.[a-z]{3})\s?'%(self.settings['upyun_server'],self.settings['upyun_space']), value)
