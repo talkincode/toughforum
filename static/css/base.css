@@ -192,15 +192,18 @@ max-width:100%;height:auto;
     font-size:21px;
     weight:600;
 }
-.post-detail h2,
-.post-detail h3{
+.post-detail h2{
     font-size:18px;
+    weight:600;
+}
+.post-detail h3{
+    font-size:16px;
     weight:600;
 }
 
 .post-detail h4,
 .post-detail h5{
-    font-size:16px;
+    font-size:14px;
     weight:500;
 }
 
