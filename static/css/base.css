@@ -237,7 +237,7 @@ max-width:100%;height:auto;
     font-size: 14px;
     color: gray;
 }
-.user-profile .media-heading
+.user-profile .media-heading,
 .post-detail .media-heading{
     font-weight: 500;
     font-size: 21px;
