@@ -283,9 +283,9 @@ max-width:100%;height:auto;
     background-color: #fcfcfc;
     padding:5px 10px 5px 20px;
 }
-.post-append p{
-/*    border-top: 1px solid #f3f3f3;
-    padding-top: 10px;*/
+.post-append .append-hr{
+    border-top: 1px solid #f3f3f3;
+    padding-top: 10px;
 }
 
 .user-profile .media-note > a,
