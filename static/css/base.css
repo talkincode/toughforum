@@ -259,9 +259,9 @@ max-width:100%;height:auto;
 
 .post-detail blockquote {
     color:gray;
-    padding: 10px 20px;
-    margin: 0 0 20px;
-    font-size: 13px;
+    padding: 10px 10px;
+    margin: 0 0 10px;
+    font-size: 14px;
     border-left: 5px solid #eee;
 }
 
