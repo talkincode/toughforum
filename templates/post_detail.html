@@ -63,14 +63,14 @@ function addEvernotePost(post_id){
           </div>
         </div>
        <hr>  
-       <p>${markdown(handler.filterRes(post.content))}</p> 
+       <p>${handler.filterRes(markdown(post.content))}</p> 
 </div>
  % if appends:
  <div class="post-append">
  % for append in appends:
  <span class="gray-text">${utils.convtime(append.created)}</span>
 <p>
- ${markdown(handler.filterRes(append.content))}
+ ${handler.filterRes(markdown(append.content))}
  </p> 
  % endfor
  </div>
