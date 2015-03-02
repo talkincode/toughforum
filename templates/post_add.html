@@ -4,7 +4,12 @@
 <%def name="head()">
 <link href="/static/uploadify/uploadify.css" rel="stylesheet">
 <script src="/static/uploadify/jquery.uploadify.min.js"></script>
+<script src="/static/js/markdown.min.js"></script>
+
 <script>
+
+    var mdflag = false;
+    
     $(function () 
     {
         $('#pic_upload').uploadify({
@@ -18,6 +23,17 @@
                 $("#content").val($("#content").val() + "   " + data);
             }
         });
+        
+        $('#mdview_act').click(function(ev){
+            if(!mdflag){
+                $("#mdview").html(markdown.toHTML($("#content").val()));
+                mdflag = true;
+            }
+            else{
+                $("#mdview").html('');
+                mdflag = false;
+            }
+        })
     });
 </script>
 </%def>
@@ -42,8 +58,11 @@
             <textarea id="content" name="content" class="form-control top10" rows="12" placeholder="在此描述你的主题内容,允许为空">${content or ''}</textarea>
             <button id="pic_upload" type="button" class="btn btn-info">上传</button>   
             <button type="submit" class="btn btn-default top10">发布</button>
-             <div id="queue"></div>
+            <button id="mdview_act" type="button" class="btn btn-default top10">预览</button>
+            <div id="queue"></div>
         </form>
+        <br>
+        <div id="mdview"></div>
     </div>
 </div>
 </%def>

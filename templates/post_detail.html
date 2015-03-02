@@ -84,6 +84,9 @@ function addEvernotePost(post_id){
 
  % if current_user and post.username == current_user.username:
     <a href="/post/append/${str(post.post_id)}">增加内容</a>
+    % if not handler.is_old_pdate(post.created):
+    <a href="/post/edit/${str(post.post_id)}">修改主题</a>
+    % endif
     <a href="/post/move/${str(post.post_id)}">移动主题</a>
  % endif
 

@@ -18,6 +18,12 @@ post_add_form = dataform.Form(
     dataform.Item("content", rules.len_of(0,8192),description=u"主题内容",),
 )
 
+post_update_form = dataform.Form(
+    dataform.Item("post_id", rules.is_number,description=u"主题ID",),
+    dataform.Item("topic", rules.len_of(7,255),description=u"主题描述",),
+    dataform.Item("content", rules.len_of(0,8192),description=u"主题内容",),
+)
+
 @route('/post/new/(\w+)')
 class NewPostHandler(BasicHandler):
     
@@ -82,6 +88,46 @@ class NewPostHandler(BasicHandler):
         self.db.commit()
 
         self.redirect("/node/{0}".format(node_name), permanent=False)
+
+
+@route('/post/edit/(\d+)')
+class EditPostHandler(BasicHandler):
+    
+    @authenticated
+    def get(self, post_id, template_variables={}):
+        
+        post = self.db.query(CoePost).get(post_id)
+        if not post:
+            return self.render_error(msg="访问的主题不存在")
+   
+        node = self.db.query(CoeNode).filter(
+            CoeNode.node_name==post.node_name
+        ).first()
+
+        if not node:
+            return self.render_error(msg=u"节点不存在")
+
+        self.render("post_edit.html",node=node,post_id=post_id,topic=post.topic,content=post.content)
+
+    @authenticated
+    def post(self,post_id):
+        form = post_update_form()
+        if not form.validates(source=self.get_params()):
+            return self.render("post_edit.html",
+                post_id=form.d.post_id,
+                topic=form.d.topic,
+                content=form.d.content,
+                msg=form.errors
+            )
+            
+        post = self.db.query(CoePost).get(post_id)
+        post.topic = form.d.topic
+        post.content = form.d.content
+
+        self.db.commit()
+
+        self.redirect("/post/{0}".format(form.d.post_id), permanent=False)
+
 
 @route('/post/res/upload')
 class PostImageUploadHandler(BasicHandler):

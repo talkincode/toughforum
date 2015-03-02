@@ -37,9 +37,11 @@ cache = CacheManager(cache_regions={
 def markdown(src):
     ext = ['code-friendly','cuddled-lists','smarty-pants','spoiler'
     'fenced-code-blocks','footnotes','metadata','tables','tag-friendly']
-    return  markdown2.markdown(src,extras=ext)
+    return  markdown2.markdown(src,extras=ext,safe_mode=True)
 
 ##############################################################################
+
+
 
 def encrypt(x,_key):
     if not x:return ''
@@ -157,6 +159,11 @@ class BasicHandler(BaseHandler):
             self.set_secure_cookie("last_login", utils.get_currdate(), expires_days=1)
 
         return session_user
+        
+    def is_old_pdate(self,postdate):
+        '''老主题不允许编辑'''
+        pdate = datetime.datetime.strptime(postdate, '%Y-%m-%d %H:%M:%S')
+        return (datetime.datetime.now() - pdate).days > 30
 
     @cache.cache('get_user_head',expire=3600)
     def get_user_head(self,username):

@@ -5,10 +5,13 @@
 <link href="/static/uploadify/uploadify.css" rel="stylesheet">
 <script src="/static/uploadify/jquery.uploadify.min.js"></script>
 <script src="/static/js/markdown.min.js"></script>
+
 <script>
+
+    var mdflag = false;
+    
     $(function () 
     {
-        var mdflag = false;
         $('#pic_upload').uploadify({
             'buttonText': '上传图片',
             'formData': {'_xsrf': '${handler.xsrf_token}','username': '${handler.current_user.username}'},
@@ -20,6 +23,7 @@
                 $("#content").val($("#content").val() + "   " + data);
             }
         });
+        
         $('#mdview_act').click(function(ev){
             if(!mdflag){
                 $("#mdview").html(markdown.toHTML($("#content").val()));
@@ -37,20 +41,25 @@
 <div class="panel panel-default">
     <div class="panel-heading-w">
     <span class="glyphicon glyphicon-home">
-    </span><span class="conn">›</span>  ${post.topic} <span class="conn">›</span>  新增内容
+    </span>
+    <span class="conn">›</span> 修改主题
     <div class="bar pull-right">
         <a href="javascript:history.go(-1);">返回上页</a>
     </div>
     </div>
         <div class="panel-body">
 
-        <form role="form" action="/post/append/${str(post.post_id)}" method="post">
+        ${main_ui.ifalert()}
+        
+        <form role="form" action="/post/edit/${post_id}" method="post">
             ${handler.xsrf_form_html()}
-            <textarea id="content" name="content" class="form-control top10" rows="12" placeholder="在此描述你的内容"></textarea>
+            <input type='hidden' id="post_id" name='post_id' value='${post_id}'>
+            <textarea name="topic" class="form-control" rows="3" placeholder="在此简要描述的的主题">${topic or ''}</textarea>
+            <textarea id="content" name="content" class="form-control top10" rows="12" placeholder="在此描述你的主题内容,允许为空">${content or ''}</textarea>
             <button id="pic_upload" type="button" class="btn btn-info">上传</button>   
-            <button type="submit" class="btn btn-default top10">发布</button>
+            <button type="submit" class="btn btn-default top10">更新</button>
             <button id="mdview_act" type="button" class="btn btn-default top10">预览</button>
-             <div id="queue"></div>
+            <div id="queue"></div>
         </form>
         <br>
         <div id="mdview"></div>
