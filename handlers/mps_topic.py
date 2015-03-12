@@ -28,7 +28,7 @@ class NewPostHandler(BasicHandler):
             CoeUser.username == openid).first()  
 
         if current_user.credit < abs(credit_types['create_post'].value):
-            return self.render("mps/message.html",msg="你的象牙币不足，无法发表主题")
+            return self.render("mps/message.html",msg="你的硬币不足，无法发表主题")
                     
         node = self.db.query(CoeNode).filter(
             CoeNode.node_name==node_name
@@ -124,7 +124,7 @@ class PostReplyHandler(BasicHandler):
             return self.render("mps/message.html",msg="用户不存在")
 
         if current_user.credit < abs(credit_types['reply_post'].value):
-            return self.render_error(msg="你的象牙币不足，无法发表回复")
+            return self.render_error(msg="你的硬币不足，无法发表回复")
 
         reply_content = self.get_argument("reply_content",None)
         _v = rules.len_of(3,8192)
